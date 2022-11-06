@@ -4,6 +4,10 @@ const app = express();
 const ytdl = require("ytdl-core");
 const ytsr = require('ytsr');
 
+const cors = require('cors');
+
+app.use(cors());
+
 app.get("/", (req, res) => {
 	res.send("Api is active!");
 });
