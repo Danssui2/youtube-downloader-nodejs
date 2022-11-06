@@ -1,5 +1,5 @@
 {
-  "name": "yt_downloader",
+  "name": "YTDownload",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,13 +7,11 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "Naman Baranwal",
+  "author": "DanssUI",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.20.0",
-    "cors": "^2.8.5",
-    "ejs": "^3.1.8",
     "express": "^4.18.1",
-    "ytdl-core": "^4.11.2"
+    "ytdl-core": "^4.11.2",
+    "ytsr": "^3.8.0"
   }
 }

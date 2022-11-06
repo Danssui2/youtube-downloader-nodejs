@@ -1,13 +1,8 @@
 const express = require("express");
 const app = express();
+
 const ytdl = require("ytdl-core");
-const bodyParser = require("body-parser")
-const cors = require("cors");
-
-const dumpInfo = require('./data.json');
-
-app.use(cors());
-app.use(bodyParser.json());
+const ytsr = require('ytsr');
 
 app.get("/", (req, res) => {
 	res.send("Api is active!");
@@ -15,27 +10,23 @@ app.get("/", (req, res) => {
 
 app.get("/down", async (req, res) => {
   if (ytdl.validateURL(req.query.url)) {
+    
     const metainfo = await ytdl.getBasicInfo(req.query.url);
-    //const metainfo = dumpInfo;
+    res.json({"info": metainfo.videoDetails, "link": metainfo.formats});
+    
+    // Write metadata into storage
     //let data = JSON.stringify(metainfo, null, 2);
     //fs.writeFileSync('data.json', data);
     
-    res.json({"info": metainfo.videoDetails, "link": metainfo.formats});
   } else {
-    res.json({error: "Sorry, maybe you entered a wrong link"});
-  }
-  //console.log(info.formats);
-	  /*const v_id = req.query.url.split('v=')[1];
-    res.send(info.formats)*/
+    const filters1 = await ytsr.getFilters('' + req.query.url);
+    const filtered = filters1.get('Type').get('Video');
 
-	/*return res.render("download", {
-		url: "https://www.youtube.com/embed/" + v_id,
-        info: info.formats.sort((a, b) => {
-            return a.mimeType < b.mimeType;
-        }),
-	});*/
+    const searchRes = await ytsr('' + filtered.url, {limit: 8});
+    res.json({"searchres": searchRes.items});
+  }
 });
 
-app.listen(3000, () => {
-	console.log("Server is running on http://localhost:3000");
+app.listen(5000, () => {
+	console.log("Server is running on http://localhost:5000");
 });
